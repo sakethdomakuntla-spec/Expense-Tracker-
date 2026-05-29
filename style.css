@@ -1,49 +1,122 @@
 *{
-    background-color: rgb(255, 255, 255);
     padding: 0;
     margin: 0;
 }
-
 .container{
-    margin: 0px 100px;
-    background-color: chocolate;
-    border: 2px solid black;
+    box-sizing: border-box;
+    background-color: #0000000d;
     min-height: 100vh;
-}
-header{
-    background-color: blue;
-    width: auto;
-    min-height: 125px;
-    margin: 5px 0px;
+    width: 100vw;
+    max-width: 100%;
 }
 nav{
-    background-color: cornsilk;
-    min-height: 50px;
-}
-main{
-    width:100%;
-    background-color: wheat;
-    display: flex;
-    flex-direction: column;
-}
-.BlockContainer{
-    background-color:yellow;
-    width: 100%;
+    width: 100vw;
+    max-width: 100%;
+    box-sizing:  border-box;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: end;
+    font-size: medium;
+    min-height: 45px;
+    gap: 10px;
+    padding: 0px 15px;
+    background-color: white;
 }
-.block{
-    width: 300px;
-    height: 150px;
-    background-color: rgba(255, 255, 255, 0.923);
-    margin: 10px 15px 25px 15px;
-    border: 3px solid gray;
-    border-radius: 25px;
+nav>div{
+    display:block;
+    width: 80%;
+    text-align: center;
+    font-size: x-large;
+}
+nav>ul{
+    display: flex;
+    list-style: none;
+}
+nav>ul>li{
+    padding: 0 7px;
+}
+nav>input{
+    background-color: #48d5fb;
+    color: whitesmoke;
+    padding: 4px 7px;
+    border: 2px solid #48d5fb;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#Money{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.CB{
+    margin-top: 25px;
+    width: 70vw;
+    height: 125px;
+    color: gray;
+}
+.cbamount{
+    font-size: 80px;
+    color: black;
+}
+.IE{
+    display: flex;
+    gap: 25px;
+    margin-bottom: 25px;
+    color: grey;
+}
+.IE>div{
+    box-sizing: border-box;
+    width: 35vw;
+    height: 100px;
+    background-color: white;
+    border: 2px solid #0000008f;
+    border-radius: 9px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    height: 60px;
+    width: 60px;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+.inlogo{
+    background-color: rgba(95, 355, 0, 0.55);
+}
+.inamount{
+    padding-top: 5px;
+    color: black;
+    font-size: 30px;
+}
+.exlogo{
+    background-color: rgba(255, 0, 0, 0.308);
+}
+.examount{
+    padding-top: 5px;
+    font-size: 30px;
+    color: black;
+}
+#transactions{
+    display: flex;
+    justify-content: center;
+    gap: 25px;
 }
 .transactions{
-    width: 75%;
-    height: 500px;
-    background-color: yellowgreen;
-    align-self: center;
+    width: 45vw;
+    height: 400px;
+    background-color: white;
+    border: 2px solid #0000008f;
+    border-radius: 12px;
+}
+.optional{
+    width: 25vw;
+    height: 400px;
+    background-color: white;
+    border: 2px solid #0000008f;
+    border-radius: 12px;
 }
