@@ -18,6 +18,7 @@ else{
     heading.textContent=`WELCOME! ${localStorage.getItem("name")}`;
 }
 
+let CurrentBalance=0,Income=0,Expense=0;
 let Transactions=[];
 if(!localStorage.getItem("Transactions")){
     localStorage.setItem("Transactions","[]");
@@ -43,14 +44,30 @@ else{
         if(e["method"]==="Income"){
             Tblock.querySelector(".Tamount").classList.add("green");
             Tblock.querySelector(".Tamount").innerHTML="+$"+e["amount"];
+            Income=Income+JSON.parse(e["amount"]);
         }
         else{
             Tblock.querySelector(".Tamount").classList.add("red");
             Tblock.querySelector(".Tamount").innerHTML="-$"+e["amount"];
+            Expense=Expense+JSON.parse(e["amount"]);
         }
-        document.querySelector(".transactionsblock").append(Tblock);
+        document.querySelector(".transactions").append(Tblock);
     });
+    CurrentBalance=Income-Expense;
 }
+document.querySelector(".inamount").innerHTML=`+$${Income}`;
+document.querySelector(".examount").innerHTML=`-$${Expense}`;
+if(CurrentBalance>=0){
+    document.querySelector(".cbamount").innerHTML=`$ ${CurrentBalance}`;
+    if(document.querySelector(".cbamount").classList.contains("red")){
+        document.querySelector(".cbamount").classList.remove("red");
+    }
+}
+else{
+    document.querySelector(".cbamount").innerHTML=`-$ ${Math.abs(CurrentBalance)}`;
+    document.querySelector(".cbamount").classList.add("red");
+}
+
 let AddTransaction=document.querySelector("#Tbutton");
 AddTransaction.addEventListener("click",()=>{
     let TransactionForm=document.createElement("div");
@@ -107,12 +124,29 @@ AddTransaction.addEventListener("click",()=>{
         if(DataObj["method"]==="Income"){
             Tblock.querySelector(".Tamount").classList.add("green");
             Tblock.querySelector(".Tamount").innerHTML="+$"+DataObj["amount"];
+            Income=Income+JSON.parse(DataObj["amount"]);
+            document.querySelector(".inamount").innerHTML=`+$${Income}`;
         }
         else{
             Tblock.querySelector(".Tamount").classList.add("red");
             Tblock.querySelector(".Tamount").innerHTML="-$"+DataObj["amount"];
+            Expense=Expense+JSON.parse(DataObj["amount"]);
+            document.querySelector(".examount").innerHTML=`-$${Expense}`;
+            CurrentBalance=Income-Expense;
+            document.querySelector(".cbamount").innerHTML=`$${CurrentBalance}`;
         }
-        document.querySelector(".transactionsblock").append(Tblock);
+        CurrentBalance=Income-Expense;
+        if(CurrentBalance>=0){
+            document.querySelector(".cbamount").innerHTML=`$ ${CurrentBalance}`;
+            if(document.querySelector(".cbamount").classList.contains("red")){
+                document.querySelector(".cbamount").classList.remove("red");
+            }
+        }
+        else{
+            document.querySelector(".cbamount").innerHTML=`-$ ${Math.abs(CurrentBalance)}`;
+            document.querySelector(".cbamount").classList.add("red");
+        }
+        document.querySelector(".transactions").append(Tblock);
         TransactionForm.remove();
     })
 
