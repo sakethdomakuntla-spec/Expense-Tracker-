@@ -18,7 +18,13 @@ else{
     heading.textContent=`WELCOME! ${localStorage.getItem("name")}`;
 }
 
-let CurrentBalance=0,Income=0,Expense=0;
+let CurrentBalance=0,Income=0,Expense=0,NoOfTransactions=0;
+if(!localStorage.getItem("NoOfTransactions")){
+    localStorage.setItem("NoOfTransactions","0");
+}
+else{
+    NoOfTransactions=JSON.parse(localStorage.getItem("NoOfTransactions"));
+}
 let Transactions=[];
 if(!localStorage.getItem("Transactions")){
     localStorage.setItem("Transactions","[]");
@@ -27,7 +33,8 @@ else{
     Transactions=JSON.parse(localStorage.getItem("Transactions"));
     Transactions.forEach((e) => {
         let Tblock=document.createElement("div");
-        Tblock.innerHTML=`      <div class="transaction">
+        Tblock.innerHTML=`      <button>X</button>
+                                <div class="transaction">
                                 <div class="Tlogo"></div>
                                 <div class="Tdetails">
                                     <div class="Tname"></div>
@@ -38,6 +45,7 @@ else{
                             <div class="line"></div>`
         
         Tblock.classList.add("transactionblock");
+        Tblock.setAttribute("id",e["TID"]);
         Tblock.querySelector(".Tlogo").innerHTML=`${e["description"].at(0)}`;
         Tblock.querySelector(".Tname").innerHTML=e["description"]; 
         Tblock.querySelector(".Tdate").innerHTML=e["date"];
@@ -102,12 +110,16 @@ AddTransaction.addEventListener("click",()=>{
         const formData= new FormData(event.target);
         const DataObj=Object.fromEntries(formData);
         const today=new Date();
-        DataObj["date"]=`${today.getDate()} ${today.toLocaleString('default',{month:'long'})}`
+        DataObj["date"]=`${today.getDate()} ${today.toLocaleString('default',{month:'long'})}`;
+        NoOfTransactions=NoOfTransactions+1;
+        localStorage.setItem("NoOfTransactions",`${NoOfTransactions}`);
+        DataObj["TID"]=`${NoOfTransactions}`;
         Transactions=JSON.parse(localStorage.getItem("Transactions"))
         Transactions.push(DataObj);
         localStorage.setItem("Transactions",JSON.stringify(Transactions));
         let Tblock=document.createElement("div");
-        Tblock.innerHTML=`      <div class="transaction">
+        Tblock.innerHTML=`      <button>X</button>
+                                <div class="transaction">
                                 <div class="Tlogo"></div>
                                 <div class="Tdetails">
                                     <div class="Tname"></div>
@@ -118,6 +130,7 @@ AddTransaction.addEventListener("click",()=>{
                             <div class="line"></div>`
         
         Tblock.classList.add("transactionblock");
+        Tblock.setAttribute("id",DataObj["TID"]);
         Tblock.querySelector(".Tlogo").innerHTML=`${DataObj["description"].at(0)}`;
         Tblock.querySelector(".Tname").innerHTML=DataObj["description"]; 
         Tblock.querySelector(".Tdate").innerHTML=DataObj["date"];
@@ -150,4 +163,45 @@ AddTransaction.addEventListener("click",()=>{
         TransactionForm.remove();
     })
 
+})
+
+document.querySelector(".transactions").addEventListener("click",(event)=>{
+    if(event.target.tagName==="BUTTON"){
+        let Tnode=event.target.parentElement;
+        let low=0,high=Transactions.length-1;
+        while(low<=high){
+            let mid=low+(high-low)/2;
+            if(JSON.parse(Transactions.at(mid)["TID"])==JSON.parse(Tnode.id)){
+                if(Transactions.at(mid)["method"]==="Income"){
+                    Income=Income-JSON.parse(Transactions.at(mid)["amount"]);
+                }
+                else{
+                    Expense=Expense-JSON.parse(Transactions.at(mid)["amount"]);
+                }
+                Transactions.splice(mid,1);
+                localStorage.setItem("Transactions",JSON.stringify(Transactions));
+                break;
+            }
+            else if(JSON.parse(Transactions.at(mid)["TID"])<JSON.parse(Tnode.id)){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+        CurrentBalance=Income-Expense;
+        document.querySelector(".inamount").innerHTML=`+$${Income}`;
+        document.querySelector(".examount").innerHTML=`-$${Expense}`;
+        if(CurrentBalance>=0){
+            document.querySelector(".cbamount").innerHTML=`$ ${CurrentBalance}`;
+            if(document.querySelector(".cbamount").classList.contains("red")){
+                document.querySelector(".cbamount").classList.remove("red");
+            }
+        }
+        else{
+            document.querySelector(".cbamount").innerHTML=`-$ ${Math.abs(CurrentBalance)}`;
+            document.querySelector(".cbamount").classList.add("red");
+        }
+        Tnode.remove();
+    }
 })
