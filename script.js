@@ -61,7 +61,22 @@ else{
         }
         document.querySelector(".transactions").append(Tblock);
     });
+    let MaxAmount=Math.max(Income,Expense);
     CurrentBalance=Income-Expense;
+    let ScaleAmount=1;
+    while(Math.floor(MaxAmount)>0){
+        MaxAmount=MaxAmount/10;
+        ScaleAmount=ScaleAmount*10;
+    }
+    ScaleAmount=ScaleAmount/10;
+    for(let i=1;i<=10;i++){
+        let x=ScaleAmount*(i-1)
+        document.querySelector(`#v${i}`).innerHTML=`${x}`;
+    }
+    let IncomeBarHeight=Math.floor((Income*29)/ScaleAmount)
+    document.querySelector(".incomebar").setAttribute("style",`height:${IncomeBarHeight}px`);
+    let ExpenseBarHeight=Math.floor((Expense*29)/ScaleAmount);
+    document.querySelector(".expensebar").setAttribute("style",`height:${ExpenseBarHeight}px`);
 }
 document.querySelector(".inamount").innerHTML=`+$${Income}`;
 document.querySelector(".examount").innerHTML=`-$${Expense}`;
@@ -161,6 +176,22 @@ AddTransaction.addEventListener("click",()=>{
         }
         document.querySelector(".transactions").append(Tblock);
         TransactionForm.remove();
+
+        MaxAmount=Math.max(Income,Expense);
+        ScaleAmount=1;
+        while(Math.floor(MaxAmount)>0){
+            MaxAmount=MaxAmount/10;
+            ScaleAmount=ScaleAmount*10;
+        }
+        ScaleAmount=ScaleAmount/10;
+        for(let i=1;i<=10;i++){
+            let x=ScaleAmount*(i-1)
+            document.querySelector(`#v${i}`).innerHTML=`${x}`;
+        }
+        IncomeBarHeight=Math.floor((Income*29)/ScaleAmount)
+        document.querySelector(".incomebar").setAttribute("style",`height:${IncomeBarHeight}px`);
+        ExpenseBarHeight=Math.floor((Expense*29)/ScaleAmount);
+        document.querySelector(".expensebar").setAttribute("style",`height:${ExpenseBarHeight}px`);
     })
 
 })
